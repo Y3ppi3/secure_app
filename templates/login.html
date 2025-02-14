@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6, #e2e6ea);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            color: #b4243c;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #b4243c;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.2em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #139da7;
+            transform: translateY(-2px);
+        }
+        .link {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #b4243c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #888;
+        }
+        .flash-message {
+            color: red;
+            margin-bottom: 15px;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+        .flash-message.hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Вход</h1>
+
+        <!-- Блок для отображения сообщений об ошибке -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-message">
+              {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('login') }}" method="post">
+            <label for="username">Адрес электронной почты:</label>
+            <input type="text" id="username" name="username" required aria-label="Введите адрес электронной почты">
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required aria-label="Введите пароль">
+
+            <button type="submit">Войти</button>
+        </form>
+
+        <div class="link-buttons">
+            <button onclick="window.location.href='{{ url_for('register') }}'" style="margin-top: 15px;">Зарегистрироваться</button>
+            <button onclick="window.location.href='{{ url_for('reset_password') }}'" style="margin-top: 10px;">Забыли пароль?</button>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Муж на час
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+
+            flashMessages.forEach(function(message) {
+                // Установить задержку перед скрытием
+                setTimeout(function() {
+                    message.classList.add('hidden');
+                }, 5000); // 5 секунд
+
+                // Удалить сообщение из DOM через 6 секунд
+                setTimeout(function() {
+                    message.remove();
+                }, 6000);
+            });
+        });
+    </script>
+</body>
+</html>
